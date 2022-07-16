@@ -38,6 +38,10 @@ export async function getSingleQuote(quoteId) {
   return loadedQuote;
 }
 
+export async function getUsersQuotes() {
+  const response = await fetch(``);
+}
+
 export async function addQuote(quoteData) {
   const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`, {
     method: "POST",

@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useContext } from "react";
 import { useParams, Route, Link, useRouteMatch } from "react-router-dom";
 
 import Comments from "../components/comments/Comments";
@@ -6,8 +6,12 @@ import HighlightedQuote from "../components/quotes/HighlightedQuote";
 import useHttp from "../hooks/use-http";
 import { getSingleQuote } from "../lib/api";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
+import AuthContext from "../store/auth-context";
 
 const QuoteDetail = () => {
+  const authCtx = useContext(AuthContext);
+  const isLoggedIn = authCtx.isLoggedIn;
+
   const match = useRouteMatch();
   const { quoteId } = useParams();
   const {
@@ -43,15 +47,19 @@ const QuoteDetail = () => {
       <HighlightedQuote text={loadedQuote.text} author={loadedQuote.author} />
       <Route path={match.path} exact>
         <div className="centered">
-          <Link className={"btn--flat"} to={`${match.url}comments`}>
-            Load comments
-          </Link>
+          {isLoggedIn && (
+            <Link className={"btn--flat"} to={`${match.url}comments`}>
+              Load comments
+            </Link>
+          )}
         </div>
       </Route>
 
-      <Route path={`${match.path}/comments`}>
-        <Comments />
-      </Route>
+      {isLoggedIn && (
+        <Route path={`${match.path}/comments`}>
+          <Comments />
+        </Route>
+      )}
     </Fragment>
   );
 };

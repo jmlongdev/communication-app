@@ -11,7 +11,7 @@ const NewQuote = () => {
 
   useEffect(() => {
     if (status === "completed") {
-      history.push("/quotes");
+      history.push("/");
     }
   }, [status, history]);
 

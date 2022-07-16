@@ -10,7 +10,6 @@ const MainNavigation = () => {
   const isLoggedIn = authCtx.isLoggedIn;
 
   const logoutHandler = () => {
-    console.log("logout");
     authCtx.logout();
     history.replace("/auth");
   };
@@ -18,15 +17,10 @@ const MainNavigation = () => {
   return (
     <header className={classes.header}>
       <Link to="/">
-        <div className={classes.logo}>Auth</div>
+        <div className={classes.logo}>Quotes</div>
       </Link>
       <nav>
         <ul>
-          <li>
-            <NavLink activeClassName={classes.active} to="/quotes">
-              All Quotes
-            </NavLink>
-          </li>
           {isLoggedIn && (
             <li>
               <NavLink activeClassName={classes.active} to="/new-quote">
@@ -36,7 +30,7 @@ const MainNavigation = () => {
           )}
           {!isLoggedIn && (
             <li>
-              <Link to="auth">Login</Link>
+              <Link to="/auth">Login</Link>
             </li>
           )}
           {isLoggedIn && (

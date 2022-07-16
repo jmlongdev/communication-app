@@ -22,6 +22,13 @@ const AuthForm = () => {
     setIsLogin((prevState) => !prevState);
   };
 
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
+  //   const enteredEmail = emailInputRef.current.value;
+  //   const enteredPassword = passwordInputRef.current.value;
+
+  //   // optional: add validation
+
   const submitHandler = (e) => {
     e.preventDefault();
     const enteredEmail = emailInputRef.current.value;
@@ -31,49 +38,40 @@ const AuthForm = () => {
 
     setIsLoading(true);
     let url;
-    if (isLogin) {
-      url = SIGN_IN_ENDPOINT;
-    } else {
-      url = SIGN_UP_ENDPOINT;
-    }
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        email: enteredEmail,
-        password: enteredPassword,
-        returnSecureToken: true,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        setIsLoading(false);
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            //show error modal
-            let errorMessage = "Authentication Failed";
-            // if (data && data.error && data.error.message) {
-            //   errorMessage = data.error.message;
-            //   console.log(errorMessage);
-            // }
-
-            throw new Error(errorMessage);
-          });
+    const authUser = async (url) => {
+      if (isLogin) {
+        url = SIGN_IN_ENDPOINT;
+      } else {
+        url = SIGN_UP_ENDPOINT;
+      }
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify({
+            email: enteredEmail,
+            password: enteredPassword,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Authentication Failed");
         }
-      })
-      .then((data) => {
+        const data = await response.json();
+
         const expirationTime = new Date(
           new Date().getTime() + +data.expiresIn * 1000
         );
         authCtx.login(data.idToken, expirationTime.toISOString());
         history.replace("/");
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+        console.log(data.user);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+    authUser();
   };
 
   return (

@@ -7,7 +7,7 @@ import Layout from "./components/Layout/Layout";
 import AuthPage from "./pages/AuthPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
-import AllQuotes from "./pages/AllQuotes";
+// import AllQuotes from "./pages/AllQuotes";
 import QuoteDetail from "./pages/QuoteDetail";
 import NewQuote from "./pages/NewQuote";
 
@@ -42,7 +42,7 @@ function App() {
             <Redirect to="/quotes" />
           </Route>
           <Route path="/quotes" exact>
-            <AllQuotes />
+            <Redirect to="/" />
           </Route>
           <Route path="/quotes/:quoteId">
             <QuoteDetail />

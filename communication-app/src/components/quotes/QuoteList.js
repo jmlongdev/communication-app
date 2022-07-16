@@ -1,7 +1,8 @@
-import { Fragment } from "react";
+import { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import QuoteItem from "./QuoteItem";
 import classes from "./QuoteList.module.css";
+import AuthContext from "../../store/auth-context";
 
 const sortQuotes = (quotes, ascending) => {
   return quotes.sort((quoteA, quoteB) => {
@@ -14,6 +15,9 @@ const sortQuotes = (quotes, ascending) => {
 };
 
 const QuoteList = (props) => {
+  const authCtx = useContext(AuthContext);
+  const isLoggedin = authCtx.isLoggedIn;
+
   const history = useHistory();
   const location = useLocation();
 
@@ -33,11 +37,13 @@ const QuoteList = (props) => {
   };
   return (
     <section className={classes.main}>
-      <div className={classes.sorting}>
-        <button onClick={changeSortingHandler}>
-          Sort {isSortingAscending ? "Descending" : "Ascending"}
-        </button>
-      </div>
+      {isLoggedin && (
+        <div className={classes.sorting}>
+          <button onClick={changeSortingHandler}>
+            Sort {isSortingAscending ? "Descending" : "Ascending"}
+          </button>
+        </div>
+      )}
       <ul className={classes.list}>
         {sortedQuotes.map((quote) => (
           <QuoteItem

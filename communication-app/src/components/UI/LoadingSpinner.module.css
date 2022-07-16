@@ -4,7 +4,7 @@
   height: 80px;
 }
 .spinner:after {
-  content: ' ';
+  content: " ";
   display: block;
   width: 64px;
   height: 64px;
@@ -21,4 +21,10 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.main {
+  margin: 3rem auto;
+  width: 90%;
+  max-width: 40rem;
 }

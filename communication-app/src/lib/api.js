@@ -1,5 +1,27 @@
 const FIREBASE_DOMAIN = "https://quote-site-74e58-default-rtdb.firebaseio.com";
 
+// export async function getUserQuotes() {
+//   const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`);
+//   const data = await response.json();
+
+//   if (!response.ok) {
+//     throw new Error(data.message || "Could not fetch quotes.");
+//   }
+
+//   const transformedQuotes = [];
+
+//   for (const key in data) {
+//     const quoteObj = {
+//       id: key,
+//       ...data[key],
+//     };
+
+//     transformedQuotes.push(quoteObj);
+//   }
+//   console.log(transformedQuotes);
+//   return transformedQuotes;
+// }
+
 export async function getAllQuotes() {
   const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`);
   const data = await response.json();
@@ -18,7 +40,7 @@ export async function getAllQuotes() {
 
     transformedQuotes.push(quoteObj);
   }
-
+  // console.log(transformedQuotes);
   return transformedQuotes;
 }
 
@@ -36,10 +58,6 @@ export async function getSingleQuote(quoteId) {
   };
 
   return loadedQuote;
-}
-
-export async function getUsersQuotes() {
-  const response = await fetch(``);
 }
 
 export async function addQuote(quoteData) {

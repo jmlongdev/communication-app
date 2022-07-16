@@ -1,13 +1,17 @@
-import { Fragment, useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
+import AuthContext from "../../store/auth-context";
+
 import { Prompt } from "react-router-dom";
 import Card from "../UI/Card";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import classes from "./QuoteForm.module.css";
-
 const QuoteForm = (props) => {
   const [isEntered, setIsEntered] = useState(false);
   const authorInputRef = useRef();
   const textInputRef = useRef();
+
+  const authCtx = useContext(AuthContext);
+  const userId = authCtx.userId;
 
   function submitFormHandler(event) {
     event.preventDefault();
@@ -17,7 +21,11 @@ const QuoteForm = (props) => {
 
     // optional: Could validate here
 
-    props.onAddQuote({ author: enteredAuthor, text: enteredText });
+    props.onAddQuote({
+      author: enteredAuthor,
+      text: enteredText,
+      userId: userId,
+    });
   }
 
   const finishEnteredHandler = () => {
@@ -47,7 +55,6 @@ const QuoteForm = (props) => {
               <LoadingSpinner />
             </div>
           )}
-
           <div className={classes.control}>
             <label htmlFor="author">Author</label>
             <input type="text" id="author" ref={authorInputRef} />

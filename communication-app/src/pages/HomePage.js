@@ -1,5 +1,5 @@
 import StartingPage from "../components/StartingPage/StartingPage";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 
 import QuoteList from "../components/quotes/QuoteList";
 import NoQuotesFound from "../components/quotes/NoQuotesFound";
@@ -7,13 +7,20 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 import useHttp from "../hooks/use-http";
 import { getAllQuotes } from "../lib/api";
 
+import AuthContext from "../store/auth-context";
+
 const HomePage = () => {
+  const authCtx = useContext(AuthContext);
+  const userId = authCtx.localId;
+  // console.log(userId);
   const {
     sendRequest,
     status,
     data: loadedQuotes,
     error,
   } = useHttp(getAllQuotes, true);
+
+  // console.log(loadedQuotes.map((quote) => quote.userId));
 
   useEffect(() => {
     sendRequest();

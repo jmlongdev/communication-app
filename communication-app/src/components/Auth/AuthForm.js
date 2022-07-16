@@ -12,20 +12,16 @@ const AuthForm = () => {
   const history = useHistory();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const nameInputRef = useRef();
 
   const authCtx = useContext(AuthContext);
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
+  // const [userLocalId, setUserLocalId] = useState();
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
-
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-  //   const enteredEmail = emailInputRef.current.value;
-  //   const enteredPassword = passwordInputRef.current.value;
 
   //   // optional: add validation
 
@@ -33,11 +29,12 @@ const AuthForm = () => {
     e.preventDefault();
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-
+    // const enteredName = nameInputRef.current.value;
     // optional: add validation
 
     setIsLoading(true);
     let url;
+
     const authUser = async (url) => {
       if (isLogin) {
         url = SIGN_IN_ENDPOINT;
@@ -60,24 +57,55 @@ const AuthForm = () => {
           throw new Error("Authentication Failed");
         }
         const data = await response.json();
-
         const expirationTime = new Date(
           new Date().getTime() + +data.expiresIn * 1000
         );
-        authCtx.login(data.idToken, expirationTime.toISOString());
+        authCtx.login(data.idToken, expirationTime.toISOString(), enteredEmail);
+        // authCtx.tokenHandler(data.idToken);
         history.replace("/");
-        console.log(data.user);
       } catch (error) {
         alert(error.message);
       }
     };
+
     authUser();
+    const authToken = authCtx.token;
+    console.log(authToken);
+    const getUserId = async (id) => {
+      try {
+        const response = await fetch(
+          `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              idToken: id,
+            }),
+            headers: { "Content-Type": "applicaiton/json" },
+          }
+        );
+        if (!response.ok) {
+          console.log("Failed");
+        }
+        const data = await response.json();
+        // console.log(data.users[0].localId);
+        authCtx.localIdHandler(data.users[0].localId);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserId();
   };
 
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
       <form onSubmit={submitHandler}>
+        {!isLogin && (
+          <div className={classes.control}>
+            <label htmlFor="name">Your Name</label>
+            <input type="text" id="name" ref={nameInputRef} />
+          </div>
+        )}
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
           <input type="email" id="email" ref={emailInputRef} required />

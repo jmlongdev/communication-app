@@ -5,3 +5,9 @@
 .comments > button {
   font-size: 1.25rem;
 }
+
+.main {
+  margin: 3rem auto;
+  width: 90%;
+  max-width: 40rem;
+}

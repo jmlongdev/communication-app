@@ -46,20 +46,22 @@ const Comments = () => {
     comments = <p className="centered">No comments were added yet</p>;
   }
   return (
-    <section className={classes.comments}>
-      <h2>User Comments</h2>
-      {!isAddingComment && (
-        <button className="btn" onClick={startAddCommentHandler}>
-          Add a Comment
-        </button>
-      )}
-      {isAddingComment && (
-        <NewCommentForm
-          quoteId={quoteId}
-          onAddedComment={addedCommentHandler}
-        />
-      )}
-      {comments}
+    <section className={classes.main}>
+      <section className={classes.comments}>
+        <h2>User Comments</h2>
+        {!isAddingComment && (
+          <button className="btn" onClick={startAddCommentHandler}>
+            Add a Comment
+          </button>
+        )}
+        {isAddingComment && (
+          <NewCommentForm
+            quoteId={quoteId}
+            onAddedComment={addedCommentHandler}
+          />
+        )}
+        {comments}
+      </section>
     </section>
   );
 };

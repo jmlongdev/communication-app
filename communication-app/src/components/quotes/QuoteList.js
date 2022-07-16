@@ -32,7 +32,7 @@ const QuoteList = (props) => {
     // );
   };
   return (
-    <Fragment>
+    <section className={classes.main}>
       <div className={classes.sorting}>
         <button onClick={changeSortingHandler}>
           Sort {isSortingAscending ? "Descending" : "Ascending"}
@@ -48,7 +48,7 @@ const QuoteList = (props) => {
           />
         ))}
       </ul>
-    </Fragment>
+    </section>
   );
 };
 

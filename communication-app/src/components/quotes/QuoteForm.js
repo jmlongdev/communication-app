@@ -29,7 +29,7 @@ const QuoteForm = (props) => {
   };
 
   return (
-    <Fragment>
+    <section className={classes.main}>
       <Prompt
         when={isEntered}
         message={(location) =>
@@ -63,7 +63,7 @@ const QuoteForm = (props) => {
           </div>
         </form>
       </Card>
-    </Fragment>
+    </section>
   );
 };
 
